@@ -5,6 +5,7 @@ const User = model("Users");
 
 module.exports = function userRoutes(app) {
   app.post("/signup", (req, res) => {
+    console.log(req.body);
     const {
       name,
       email,
@@ -15,7 +16,7 @@ module.exports = function userRoutes(app) {
       phoneNumber,
     } = req.body;
     User.create({
-      name: req.body.name,
+      name,
       email,
       password,
       passwordConfirm,
@@ -26,6 +27,7 @@ module.exports = function userRoutes(app) {
       .then((doc) => {
         const token = jwt.sign({ id: doc._id }, process.env.TOKEN_SECRET);
         res.json({
+          status: "success",
           token,
           data: doc,
         });
@@ -40,6 +42,7 @@ module.exports = function userRoutes(app) {
           res.json({
             status: "fail",
             message: "CHECK_INFO",
+            details: err,
           });
         }
       });
@@ -51,18 +54,17 @@ module.exports = function userRoutes(app) {
       return next();
     }
     User.findOne({ email })
-      .then(async(user) => {
-        const check = await user.checkPassword(password)
-        if(!check){
-         return res.json({
+      .then(async (user) => {
+        const check = await user.checkPassword(password);
+        if (!check) {
+          return res.json({
             status: "fail",
             message: "PASSWORD_WRONG",
           });
         }
 
         const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET);
-        res.json({ data: user, token });
-
+        res.json({ status: "success", data: user, token });
       })
       .catch(() => {
         res.json({
@@ -70,8 +72,6 @@ module.exports = function userRoutes(app) {
           message: "EMAIL_WRONG",
         });
       });
-
- 
   });
 
   app.patch("/authenticate/:id", auth, isMainAdmin, (req, res) => {
