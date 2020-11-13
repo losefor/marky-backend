@@ -1,6 +1,6 @@
 const { model } = require("mongoose");
 const jwt = require("jsonwebtoken");
-const { auth, isMainAdmin } = require("../middlewares/authContoller");
+const { auth, isMainAdmin , isAdmin } = require("../middlewares/authContoller");
 const User = model("Users");
 
 module.exports = function userRoutes(app) {
@@ -88,4 +88,15 @@ module.exports = function userRoutes(app) {
         });
       });
   });
+
+  app.get('/api/users' , auth , isMainAdmin ,  (req,res)=>{
+      User.find({isMainAdmin:false}).then(users=>{
+        res.json({
+        data:  users , 
+        status:'success'
+        })
+      }).catch(()=>{
+        res.json({status:'fail'})
+      })
+  })
 };

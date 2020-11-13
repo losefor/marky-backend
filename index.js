@@ -11,7 +11,7 @@ require('dotenv').config({
 })
 
 app.use(cors())
-
+app.use(morgan('dev'))
 
 /* connecting to the mongodb
 ==================================*/ 
