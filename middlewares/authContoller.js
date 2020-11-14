@@ -6,13 +6,13 @@ const User = model("Users");
 exports.auth = function (req, res, next) {
   // check if user loggedin
   const token = req.headers.authorization;
-  console.log(token)
+  // console.log(token)
   if (!token) {
     return res.json({ status: "fail" , message:"NEED_SIGNIN" });
   }
 
   jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
-      console.log(decoded)
+      // console.log(decoded)
     if (err) {
       return res.json({ status: "fail" , message:err });
     } else {
@@ -29,7 +29,7 @@ exports.auth = function (req, res, next) {
 };
 
 exports.isAdmin = (req, res, next) => {
-  console.log(req.user.isAdmin);
+  // console.log(req.user.isAdmin);
   if (req.user.isAdmin == false) {
     // console.log('not an adimin')
     return res.json({
@@ -48,7 +48,7 @@ exports.isAdmin = (req, res, next) => {
 };
 
 exports.isMainAdmin = (req, res, next) => {
-  console.log(req.user);
+  // console.log(req.user);
   if (req.user.isMainAdmin == false) {
     // console.log('not an adimin')
     return res.json({
