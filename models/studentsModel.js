@@ -26,7 +26,7 @@ const studentsSchema = new Schema({
     unique: true,
   },
   phoneNumber: { type: String, required: true },
-  stage: { type: Number, required: true },
+  stage: { type: Number, required: true , enum:[1,2,3,4,5,6] },
   department: { type: String, required: true, enum: departments },
   isSuccess: { type: Boolean, default: null },
   createdAt: { type: Date, default: Date.now },

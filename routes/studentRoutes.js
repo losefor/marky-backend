@@ -7,13 +7,10 @@ module.exports = function studentRoutes(app) {
   // find all students
   app.get("/student", auth, isAdmin, async (req, res) => {
     const filter = {};
-    // console.log(req.query)
-    const { isSuccess, stage, department } = req.body;
+    const { stage, department } = req.query;
 
-    // isSuccess = (isSuccess == 'true')
-    if (isSuccess !== null) filter.isSuccess = isSuccess;
-    if (stage !== null) filter.stage = Number(stage) ;
-    if (department !== null) filter.department = department;
+    if (stage !== 'null') filter.stage = Number(stage) ;
+    if (department !== 'null') filter.department = department;
 
     console.log(filter)
 
