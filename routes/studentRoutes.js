@@ -12,7 +12,7 @@ module.exports = function studentRoutes(app) {
     if (stage !== 'null') filter.stage = Number(stage) ;
     if (department !== 'null') filter.department = department;
 
-    console.log(filter)
+    // console.log(filter)
 
     try{
       const doc = await Student.find(filter);
@@ -64,8 +64,11 @@ module.exports = function studentRoutes(app) {
         readable: true,
       }),
     })
-      .then((doc) => res.json(doc))
-      .catch((err) => res.send(err));
+      .then((doc) => res.json({
+        status:'success' , 
+        data:doc
+      }))
+      .catch((err) => res.json({status:'fail'}));
   });
 
   // delete specific student by its _id
@@ -80,7 +83,12 @@ module.exports = function studentRoutes(app) {
     Student.findByIdAndUpdate(req.params.id, {
       ...req.body,
     })
-      .then((doc) => res.json(doc))
-      .catch((err) => res.send(err));
+      .then((doc) => res.json({
+        status:'success' , 
+        data:doc
+      }))
+      .catch((err) => res.json({
+        status:'fail'
+      }));
   });
 };

@@ -51,7 +51,7 @@ module.exports = function userRoutes(app) {
   app.post("/login", async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
-      return next();
+      return res.json({status:'fail'});
     }
     User.findOne({ email })
       .then(async (user) => {
